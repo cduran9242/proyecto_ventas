@@ -1,9 +1,9 @@
 import mysql.connector
-
+ 
 def get_db_connection():
     return mysql.connector.connect(
-        host="bpvgzsnq2k3dbwukve0u-mysql.services.clever-cloud.com",
-        user="umt7vfxnypi7klan",
-        password="VV1aQwo77jw9gCqYM2KH",
-        database="bpvgzsnq2k3dbwukve0u"
+        host="bp0llqonc2zbeikjoktk-mysql.services.clever-cloud.com",
+        user="uwybvvz9lfismmzd",
+        password="6M7anx74lTGiOrM3u9Rf",
+        database="bp0llqonc2zbeikjoktk"
     )

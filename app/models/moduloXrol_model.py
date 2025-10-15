@@ -1,15 +1,15 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class RolBaseModel(BaseModel):
-    nombre: str
-    descripcion: str
-    estado: str
+class ModuloRolBaseModel(BaseModel):
+    rol_id: int
+    modulo_id: int
+    estado: str 
 
-class RolCreate(RolBaseModel):
+class ModuloRolCreate(ModuloRolBaseModel):
     pass
 
-class RolResponse(RolBaseModel):
+class ModuloRolResponse(ModuloRolBaseModel):
     id: int
     created_at: datetime
     updated_at: datetime

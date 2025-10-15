@@ -3,10 +3,10 @@ from datetime import datetime
 
 class AtributoBaseModel(BaseModel):
     nombre: str
-    tipo_dato: str     # texto, numero, booleano, fecha, json
+    tipo_dato: str    
     descripcion: str
     es_requerido: bool
-    estado: str        # 'Activo' o 'Inactivo'
+    estado: str        
 
 class AtributoCreate(AtributoBaseModel):
     pass

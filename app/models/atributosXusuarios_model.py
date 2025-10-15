@@ -4,9 +4,9 @@ from datetime import datetime
 class AtributoUsuarioBaseModel(BaseModel):
     usuario_id: int
     atributo_id: int
-    tipo: str       # texto, numero, booleano, fecha, json
+    tipo: str       
     valor: str
-    estado: str     # 'Activo' o 'Inactivo'
+    estado: str     
 
 class AtributoUsuarioCreate(AtributoUsuarioBaseModel):
     pass

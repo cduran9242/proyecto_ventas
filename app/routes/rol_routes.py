@@ -1,15 +1,15 @@
 from fastapi import APIRouter
-from controllers.rol_controller import RolController
-from models.rol_model import Rol
+from app.controllers.rol_controller import RolController
+from app.models.rol_model import *
 
 router = APIRouter()
 rol_controller = RolController()
 
 @router.post("/create_rol")
-async def create_rol(rol: Rol):
+async def create_rol(rol: RolCreate):
     return rol_controller.create_rol(rol)
 
-@router.get("/get_rol/{rol_id}", response_model=Rol)
+@router.get("/get_rol/{rol_id}", response_model=RolResponse)
 async def get_rol(rol_id: int):
     return rol_controller.get_rol(rol_id)
 

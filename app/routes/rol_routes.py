@@ -1,24 +1,18 @@
-from fastapi import APIRouter, HTTPException
-from controllers.rol_controller import *
+from fastapi import APIRouter
+from controllers.rol_controller import RolController
 from models.rol_model import Rol
 
 router = APIRouter()
-
-nuevo_rol = RolController()
-
+rol_controller = RolController()
 
 @router.post("/create_rol")
 async def create_rol(rol: Rol):
-    rpta = nuevo_rol.create_user(rol)
-    return rpta
+    return rol_controller.create_rol(rol)
 
+@router.get("/get_rol/{rol_id}", response_model=Rol)
+async def get_rol(rol_id: int):
+    return rol_controller.get_rol(rol_id)
 
-@router.get("/get_rol/{rol_id}",response_model=Rol)
-async def get_user(Rol_id: int):
-    rpta = nuevo_rol.get_rol(Rol_id)
-    return rpta
-
-@router.get("/get_rols/")
-async def get_rols():
-    rpta = nuevo_rol.get_rol()
-    return rpta
+@router.get("/get_roles/")
+async def get_roles():
+    return rol_controller.get_roles()

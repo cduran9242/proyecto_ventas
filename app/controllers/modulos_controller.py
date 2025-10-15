@@ -1,77 +1,137 @@
-import mysql.connector
 from fastapi import HTTPException
-from config.db_config import get_db_connection
-from models.modulos_model import Modulos
 from fastapi.encoders import jsonable_encoder
+import mysql.connector
+from app.config.db_config import get_db_connection
 
 class ModuloController:
-        
-    def create_user(self, modulo: Modulos):   
+
+    def create_modulo(self, modulo):
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO modulos (nombre,descripcion) VALUES (%s, %s)", (modulo.nombre, modulo.descripcion))
+
+            query = """
+            INSERT INTO modulos (nombre, descripcion, ruta, estado, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, NOW(), NOW())
+            """
+            values = (modulo.nombre, modulo.descripcion, modulo.ruta, modulo.estado)
+            cursor.execute(query, values)
             conn.commit()
-            conn.close()
-            return {"resultado": "Modulo creado"}
+
+            return {"mensaje": "Módulo creado exitosamente"}
+
         except mysql.connector.Error as err:
+            print(f"Error al crear módulo: {err}")
             conn.rollback()
+            raise HTTPException(status_code=500, detail="Error al crear módulo")
+
         finally:
             conn.close()
-        
 
     def get_modulo(self, modulo_id: int):
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM rol WHERE id = %s", (modulo_id,))
+            cursor.execute("SELECT * FROM modulos WHERE id = %s", (modulo_id,))
             result = cursor.fetchone()
-            payload = []
-            content = {} 
-            
-            content={
-                    'id':int(result[0]),
-                    'nombre':result[1],
-                    'descripcion':result[2]
+
+            if not result:
+                raise HTTPException(status_code=404, detail="Módulo no encontrado")
+
+            content = {
+                "id": int(result[0]),
+                "nombre": result[1],
+                "descripcion": result[2],
+                "ruta": result[3],
+                "estado": result[4],
+                "created_at": str(result[5]),
+                "updated_at": str(result[6])
             }
-            payload.append(content)
-            
-            json_data = jsonable_encoder(content)            
-            if result:
-               return  json_data
-            else:
 
-                raise HTTPException(status_code=404, detail="Modulo not found")  
-                
+            return jsonable_encoder(content)
+
         except mysql.connector.Error as err:
+            print(f"Error al obtener módulo: {err}")
+            raise HTTPException(status_code=500, detail="Error al obtener módulo")
 
-            conn.rollback()
         finally:
             conn.close()
-       
-    def get_users(self):
+
+    def get_modulos(self):
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM rol")
+            cursor.execute("SELECT * FROM modulos")
             result = cursor.fetchall()
-            payload = []
-            content = {} 
-            for data in result:
-                content={
-                    'id':data[0],
-                    'nombre':data[1],
-                    'descripcion':data[2]
-                }
-                payload.append(content)
-                content = {}
-            json_data = jsonable_encoder(payload)        
-            if result:
-               return {"resultado": json_data}
-            else:
-                raise HTTPException(status_code=404, detail="Rol not found")  
-                
+
+            if not result:
+                raise HTTPException(status_code=404, detail="No se encontraron módulos")
+
+            payload = [
+                {
+                    "id": data[0],
+                    "nombre": data[1],
+                    "descripcion": data[2],
+                    "ruta": data[3],
+                    "estado": data[4],
+                    "created_at": str(data[5]),
+                    "updated_at": str(data[6])
+                } for data in result
+            ]
+
+            return {"resultado": jsonable_encoder(payload)}
+
         except mysql.connector.Error as err:
+            print(f"Error al listar módulos: {err}")
+            raise HTTPException(status_code=500, detail="Error al listar módulos")
+
+        finally:
+            conn.close()
+
+    def update_modulo(self, modulo_id: int, modulo):
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM modulos WHERE id = %s", (modulo_id,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Módulo no encontrado")
+
+            query = """
+            UPDATE modulos
+            SET nombre = %s, descripcion = %s, ruta = %s, estado = %s, updated_at = NOW()
+            WHERE id = %s
+            """
+            values = (modulo.nombre, modulo.descripcion, modulo.ruta, modulo.estado, modulo_id)
+            cursor.execute(query, values)
+            conn.commit()
+
+            return {"mensaje": f"Módulo con ID {modulo_id} actualizado correctamente"}
+
+        except mysql.connector.Error as err:
+            print(f"Error al actualizar módulo: {err}")
             conn.rollback()
+            raise HTTPException(status_code=500, detail="Error al actualizar módulo")
+
+        finally:
+            conn.close()
+
+    def delete_modulo(self, modulo_id: int):
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM modulos WHERE id = %s", (modulo_id,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Módulo no encontrado")
+
+            cursor.execute("DELETE FROM modulos WHERE id = %s", (modulo_id,))
+            conn.commit()
+
+            return {"mensaje": f"Módulo con ID {modulo_id} eliminado correctamente"}
+
+        except mysql.connector.Error as err:
+            print(f"Error al eliminar módulo: {err}")
+            conn.rollback()
+            raise HTTPException(status_code=500, detail="Error al eliminar módulo")
+
         finally:
             conn.close()

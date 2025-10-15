@@ -1,24 +1,18 @@
-from fastapi import APIRouter, HTTPException
-from controllers.modulos_controller import *
-from models.modulos_model import Modulos
+from fastapi import APIRouter
+from controllers.modulos_controller import ModulosController
+from models.modulos_model import Modulo
 
 router = APIRouter()
-
-nuevo_modulo = ModuloController()
-
+modulos_controller = ModulosController()
 
 @router.post("/create_modulo")
-async def create_modulo(modulo: Modulos):
-    rpta = nuevo_modulo.create_user(modulo)
-    return rpta
+async def create_modulo(modulo: Modulo):
+    return modulos_controller.create_modulo(modulo)
 
+@router.get("/get_modulo/{modulo_id}", response_model=Modulo)
+async def get_modulo(modulo_id: int):
+    return modulos_controller.get_modulo(modulo_id)
 
-@router.get("/get_rol/{rol_id}",response_model=Modulos)
-async def get_user(Rol_id: int):
-    rpta = nuevo_modulo.get_rol(Rol_id)
-    return rpta
-
-@router.get("/get_rols/")
-async def get_rols():
-    rpta = nuevo_modulo.get_rol()
-    return rpta
+@router.get("/get_modulos/")
+async def get_modulos():
+    return modulos_controller.get_modulos()

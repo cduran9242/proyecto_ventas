@@ -1,22 +1,18 @@
-from fastapi import APIRouter, HTTPException
-from controllers.atributos_controller import *
-from models.atributos_model import Atributos
+from fastapi import APIRouter
+from controllers.atributos_controller import AtributosController
+from models.atributos_model import Atributo
 
 router = APIRouter()
-
-nuevo_atributo = AtributosController()
+atributos_controller = AtributosController()
 
 @router.post("/create_atributo")
-async def create_atributo(atributo: Atributos):
-    rpta = nuevo_atributo.create_atributo(atributo)
-    return rpta
+async def create_atributo(atributo: Atributo):
+    return atributos_controller.create_atributo(atributo)
 
-@router.get("/get_rol/{rol_id}",response_model=Atributos)
-async def get_user(Rol_id: int):
-    rpta = nuevo_atributo.get_rol(Rol_id)
-    return rpta
+@router.get("/get_atributo/{atributo_id}", response_model=Atributo)
+async def get_atributo(atributo_id: int):
+    return atributos_controller.get_atributo(atributo_id)
 
-@router.get("/get_rols/")
-async def get_rols():
-    rpta = nuevo_atributo.get_rol()
-    return rpta
+@router.get("/get_atributos/")
+async def get_atributos():
+    return atributos_controller.get_atributos()

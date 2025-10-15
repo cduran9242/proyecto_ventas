@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from routes.user_routes import router as user_router
 from routes.rol_routes import router as rol_router
 from routes.modulos_routes import router as modulo_router
-from routes.modulos_routes import router as atributos_router
+from routes.atributos_routes import router as atributos_router
+from routes.atributosXusuarios_routes import router as atributosXusuarios_router
+from routes.moduloXrol_routes import router as moduloXrol_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -26,6 +28,8 @@ app.include_router(user_router)
 app.include_router(rol_router)
 app.include_router(modulo_router)
 app.include_router(atributos_router)
+app.include_router(atributoXusuario_router)
+app.include_router(moduloXrol_router)
 
 if __name__ == "__main__":
     import uvicorn

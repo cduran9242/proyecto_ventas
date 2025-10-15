@@ -6,9 +6,6 @@ from app.config.db_config import get_db_connection
 
 class UserController:
 
-    # ===========================
-    # CREAR USUARIO
-    # ===========================
     def create_user(self, usuario):
         try:
             conn = get_db_connection()
@@ -42,9 +39,6 @@ class UserController:
         finally:
             conn.close()
 
-    # ===========================
-    # OBTENER USUARIO POR ID
-    # ===========================
     def get_user(self, user_id: int):
         try:
             conn = get_db_connection()
@@ -78,9 +72,6 @@ class UserController:
         finally:
             conn.close()
 
-    # ===========================
-    # LISTAR USUARIOS
-    # ===========================
     def get_users(self):
         try:
             conn = get_db_connection()
@@ -115,9 +106,6 @@ class UserController:
         finally:
             conn.close()
 
-    # ===========================
-    # ACTUALIZAR USUARIO
-    # ===========================
     def update_user(self, user_id: int, usuario):
         try:
             conn = get_db_connection()
@@ -165,9 +153,6 @@ class UserController:
         finally:
             conn.close()
 
-    # ===========================
-    # ELIMINAR USUARIO
-    # ===========================
     def delete_user(self, user_id: int):
         try:
             conn = get_db_connection()

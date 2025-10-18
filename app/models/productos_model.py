@@ -4,15 +4,17 @@ from datetime import datetime
 from typing import Optional
 
 class ProductoBaseModel(BaseModel):
-    Codigo_producto: str  
+    idProductos: int
+    Codigo_prducto: str
     Nombre_Producto: str
     Descripcion: str
     Categoria: str
     Unidad_medida: str
-    estado: Optional[bool] = None 
+    estado: int 
 
 class ProductoCreate(ProductoBaseModel):
     pass
+
 
 class ProductoResponse(ProductoBaseModel):
     IdProductos: int
@@ -21,9 +23,9 @@ class ProductoResponse(ProductoBaseModel):
     Descripcion: str
     Categoria: str
     Unidad_medida: str
-    estado: Optional[bool] = None
-    created_at: datetime  
-    updated_at: datetime
+    estado: int
+    create_at: datetime
+    update_at: datetime
 
     class Config:
         from_attributes = True

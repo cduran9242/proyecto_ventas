@@ -1,20 +1,22 @@
+# app/models/atributosXusuarios_model.py
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
-class AtributoUsuarioBaseModel(BaseModel):
+class AtributoXUsuarioBaseModel(BaseModel):
     usuario_id: int
     atributo_id: int
-    tipo: str       
-    valor: str
-    estado: str     
+    tipo: str  
+    valor: Optional[str] = None
+    estado_id: int = 1 
 
-class AtributoUsuarioCreate(AtributoUsuarioBaseModel):
+class AtributoXUsuarioCreate(AtributoXUsuarioBaseModel):
     pass
 
-class AtributoUsuarioResponse(AtributoUsuarioBaseModel):
+class AtributoXUsuarioResponse(AtributoXUsuarioBaseModel):
     id: int
     created_at: datetime
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -22,7 +22,7 @@ class UserController:
                 usuario.cedula,
                 usuario.contrasena,
                 usuario.rol_id,
-                usuario.estado
+                usuario.estado_id
             )
 
             cursor.execute(query, values)

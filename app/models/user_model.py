@@ -7,9 +7,9 @@ class UsuarioBaseModel(BaseModel):
     email: EmailStr
     telefono: str
     cedula: str
-    password: str
+    contrasena: str
     rol_id: int
-    estado: str  # 'Activo', 'Inactivo', 'Suspendido'
+    estado_id: int = 1  # 'Activo', 'Inactivo', 'Suspendido'
 
 class UsuarioCreate(UsuarioBaseModel):
     pass
@@ -22,9 +22,9 @@ class UsuarioResponse(BaseModel):
     telefono: str
     cedula: str
     rol_id: int
-    estado: str
+    estado_id: int
     created_at: datetime
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

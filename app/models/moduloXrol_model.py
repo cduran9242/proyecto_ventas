@@ -1,18 +1,21 @@
+# app/models/moduloXrol_model.py
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
-class ModuloRolBaseModel(BaseModel):
+class ModuloXrolBaseModel(BaseModel):
     rol_id: int
     modulo_id: int
-    estado: str 
+    permisos: Optional[str] = None  
+    estado_id: int = 1 
 
-class ModuloRolCreate(ModuloRolBaseModel):
+class ModuloXrolCreate(ModuloXrolBaseModel):
     pass
 
-class ModuloRolResponse(ModuloRolBaseModel):
+class ModuloXrolResponse(ModuloXrolBaseModel):
     id: int
     created_at: datetime
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

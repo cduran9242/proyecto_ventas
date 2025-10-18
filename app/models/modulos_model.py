@@ -1,3 +1,4 @@
+# app/models/modulos_model.py
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -5,7 +6,7 @@ class ModuloBaseModel(BaseModel):
     nombre: str
     descripcion: str
     ruta: str
-    estado: str 
+    estado_id: int = 1 
 
 class ModuloCreate(ModuloBaseModel):
     pass
@@ -16,4 +17,4 @@ class ModuloResponse(ModuloBaseModel):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

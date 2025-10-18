@@ -4,7 +4,7 @@ from datetime import datetime
 class RolBaseModel(BaseModel):
     nombre: str
     descripcion: str
-    estado: str
+    estado_id: int = 1
 
 class RolCreate(RolBaseModel):
     pass
@@ -15,4 +15,4 @@ class RolResponse(RolBaseModel):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

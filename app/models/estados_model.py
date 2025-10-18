@@ -1,16 +1,15 @@
-# app/models/atributos_model.py
+# app/models/estados_model.py
 from pydantic import BaseModel
 from datetime import datetime
 
-class AtributoBaseModel(BaseModel):
+class EstadoBaseModel(BaseModel):
     nombre: str
     descripcion: str
-    estado_id: int = 1 
 
-class AtributoCreate(AtributoBaseModel):
+class EstadoCreate(EstadoBaseModel):
     pass
 
-class AtributoResponse(AtributoBaseModel):
+class EstadoResponse(EstadoBaseModel):
     id: int
     created_at: datetime
     updated_at: datetime

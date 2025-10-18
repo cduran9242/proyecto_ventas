@@ -1,29 +1,29 @@
+# app/models/productos_model.py
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
 class ProductoBaseModel(BaseModel):
-    idProductos: int
-    Codigo_prducto: str
+    Codigo_producto: str  
     Nombre_Producto: str
     Descripcion: str
     Categoria: str
     Unidad_medida: str
-    estado: int
+    estado: Optional[bool] = None 
 
 class ProductoCreate(ProductoBaseModel):
     pass
 
 class ProductoResponse(ProductoBaseModel):
-    idProductos: int = 1
-    Codigo_prducto: str
+    IdProductos: int
+    Codigo_producto: str  
     Nombre_Producto: str
     Descripcion: str
     Categoria: str
     Unidad_medida: str
-    estado: int
-    Fecha_creacion: datetime
-    Fecha_update: datetime
+    estado: Optional[bool] = None
+    created_at: datetime  
+    updated_at: datetime 
 
     class Config:
-        orm_mode = True
+        from_attributes = True

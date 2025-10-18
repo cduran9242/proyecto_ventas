@@ -1,21 +1,29 @@
+# app/controllers/atributos_controller.py
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 import mysql.connector
 from app.config.db_config import get_db_connection
 
-class AtributoController:
+class AtributosController:
 
     def create_atributo(self, atributo):
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
+
             query = """
-            INSERT INTO atributos (nombre, tipo_dato, descripcion, es_requerido, estado, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, NOW(), NOW())
+            INSERT INTO atributos (nombre, descripcion, estado_id, created_at, updated_at)
+            VALUES (%s, %s, %s, NOW(), NOW())
             """
-            values = (atributo.nombre, atributo.tipo_dato, atributo.descripcion, atributo.es_requerido, atributo.estado)
+            values = (
+                atributo.nombre,
+                atributo.descripcion,
+                atributo.estado_id
+            )
+
             cursor.execute(query, values)
             conn.commit()
+
             return {"mensaje": "Atributo creado exitosamente"}
 
         except mysql.connector.Error as err:
@@ -39,12 +47,10 @@ class AtributoController:
             content = {
                 "id": int(result[0]),
                 "nombre": result[1],
-                "tipo_dato": result[2],
-                "descripcion": result[3],
-                "es_requerido": bool(result[4]),
-                "estado": result[5],
-                "created_at": str(result[6]),
-                "updated_at": str(result[7])
+                "descripcion": result[2],
+                "estado_id": int(result[3]),
+                "created_at": str(result[4]),
+                "updated_at": str(result[5])
             }
 
             return jsonable_encoder(content)
@@ -70,12 +76,10 @@ class AtributoController:
                 {
                     "id": data[0],
                     "nombre": data[1],
-                    "tipo_dato": data[2],
-                    "descripcion": data[3],
-                    "es_requerido": bool(data[4]),
-                    "estado": data[5],
-                    "created_at": str(data[6]),
-                    "updated_at": str(data[7])
+                    "descripcion": data[2],
+                    "estado_id": data[3],
+                    "created_at": str(data[4]),
+                    "updated_at": str(data[5])
                 } for data in result
             ]
 
@@ -84,6 +88,65 @@ class AtributoController:
         except mysql.connector.Error as err:
             print(f"Error al listar atributos: {err}")
             raise HTTPException(status_code=500, detail="Error al listar atributos")
+
+        finally:
+            conn.close()
+
+    def update_atributo(self, atributo_id: int, atributo):
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT id FROM atributos WHERE id = %s", (atributo_id,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Atributo no encontrado")
+
+            query = """
+            UPDATE atributos
+            SET nombre = %s,
+                descripcion = %s,
+                estado_id = %s,
+                updated_at = NOW()
+            WHERE id = %s
+            """
+            values = (
+                atributo.nombre,
+                atributo.descripcion,
+                atributo.estado_id,
+                atributo_id
+            )
+
+            cursor.execute(query, values)
+            conn.commit()
+
+            return {"mensaje": f"Atributo con ID {atributo_id} actualizado correctamente"}
+
+        except mysql.connector.Error as err:
+            print(f"Error al actualizar atributo: {err}")
+            conn.rollback()
+            raise HTTPException(status_code=500, detail="Error al actualizar atributo")
+
+        finally:
+            conn.close()
+
+    def delete_atributo(self, atributo_id: int):
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT id FROM atributos WHERE id = %s", (atributo_id,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Atributo no encontrado")
+
+            cursor.execute("DELETE FROM atributos WHERE id = %s", (atributo_id,))
+            conn.commit()
+
+            return {"mensaje": f"Atributo con ID {atributo_id} eliminado correctamente"}
+
+        except mysql.connector.Error as err:
+            print(f"Error al eliminar atributo: {err}")
+            conn.rollback()
+            raise HTTPException(status_code=500, detail="Error al eliminar atributo")
 
         finally:
             conn.close()

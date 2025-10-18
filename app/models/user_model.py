@@ -9,7 +9,7 @@ class UsuarioBaseModel(BaseModel):
     cedula: str
     contrasena: str
     rol_id: int
-    estado_id: int = 1  # 'Activo', 'Inactivo', 'Suspendido'
+    estado_id: int = 1  
 
 class UsuarioCreate(UsuarioBaseModel):
     pass

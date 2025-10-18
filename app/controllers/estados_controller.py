@@ -150,4 +150,3 @@ class EstadosController:
 
         finally:
             conn.close()
-

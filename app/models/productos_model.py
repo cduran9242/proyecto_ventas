@@ -23,7 +23,7 @@ class ProductoResponse(ProductoBaseModel):
     Unidad_medida: str
     estado: Optional[bool] = None
     created_at: datetime  
-    updated_at: datetime 
+    updated_at: datetime
 
     class Config:
         from_attributes = True

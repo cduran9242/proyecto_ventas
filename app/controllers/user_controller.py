@@ -3,7 +3,6 @@ from fastapi.encoders import jsonable_encoder
 import mysql.connector
 from app.config.db_config import get_db_connection
 
-
 class UserController:
 
     def create_user(self, usuario):

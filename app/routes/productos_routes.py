@@ -10,9 +10,9 @@ async def create_producto(producto: ProductoCreate):
     return producto_controller.create_producto(producto)
 
 @router.get("/get_producto/{producto_id}", response_model=ProductoResponse)
-async def get_user(producto_id: int):
-    return producto_controller.get_user(producto_id)
+async def get_producto(producto_id: int):
+    return producto_controller.get_producto(producto_id)
 
 @router.get("/get_productos/")
 async def get_productos():
-    return producto_controller.get_users()
+    return producto_controller.get_productos()

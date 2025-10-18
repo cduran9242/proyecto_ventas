@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 class ProductoBaseModel(BaseModel):
+    idProductos: int = 1
     Codigo_prducto: str
     Nombre_Producto: str
     Descripcion: str
@@ -17,6 +18,7 @@ class ProductoUpdate(ProductoBaseModel):
     pass
 
 class ProductoResponse(ProductoBaseModel):
+    idProductos: int = 1
     Codigo_prducto: str
     Nombre_Producto: str
     Descripcion: str

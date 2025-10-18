@@ -22,8 +22,8 @@ class ProductoResponse(ProductoBaseModel):
     Categoria: str
     Unidad_medida: str
     estado: int
-    Fecha_creacion: datetime
-    Fecha_update: datetime
+    create_at: datetime
+    update_at: datetime
 
     class Config:
         orm_mode = True
